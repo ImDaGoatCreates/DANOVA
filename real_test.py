@@ -1,13 +1,10 @@
 import serial
 import time
 
-# CHANGE THIS TO YOUR PORT
 ser = serial.Serial("COM12", 115200, timeout=1)
 
 print("Connected to serial")
 
-# Example Feetech packet (STS3215 style)
-# This is a raw write to Goal Position
 
 packet = bytearray([
     0xFF, 0xFF,        # header
@@ -19,7 +16,6 @@ packet = bytearray([
     0x00               # checksum placeholder
 ])
 
-# Fix checksum
 packet[-1] = (~sum(packet[2:-1])) & 0xFF
 
 print("Sending raw packet:", packet)

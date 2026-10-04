@@ -582,7 +582,6 @@ class DanWindow(QMainWindow):
 
         content = QHBoxLayout()
 
-        # Left Column
         left_col = QWidget()
         left_layout = QVBoxLayout(left_col)
         left_layout.addWidget(QLabel("VISION // LOCAL CAMERA"))
@@ -657,7 +656,6 @@ class DanWindow(QMainWindow):
         left_layout.addStretch()
         content.addWidget(left_col, 2)
 
-        # Middle Column
         middle_col = QWidget()
         middle_layout = QVBoxLayout(middle_col)
         
@@ -686,7 +684,6 @@ class DanWindow(QMainWindow):
 
         content.addWidget(middle_col, 3)
 
-        # Right Column
         right_col = QWidget()
         right_layout = QVBoxLayout(right_col)
 
@@ -765,7 +762,6 @@ class DanWindow(QMainWindow):
                 <title>Fusion 360 Cloud 3D Viewer</title>
                 <style>
                     body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: #080b10; font-family: monospace; color: #7a9aae; }
-                    #canvas-container { width: 100%; height: 100%; }
                 </style>
                 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
                 <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>

@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 """
 Raw Feetech motor test - bypasses lerobot entirely
 Tests if motors respond to basic Feetech protocol commands
@@ -16,16 +15,13 @@ def test_raw_feetech():
         print("-" * 70)
         
         try:
-            # Open port
             print(f"  1. Opening {port} at 1M baud...")
             ser = serial.Serial(port, 1000000, timeout=0.5, write_timeout=0.5)
             print(f"     ✓ Success")
             
-            # Clear buffers
             ser.reset_input_buffer()
             ser.reset_output_buffer()
             
-            # Test 1: Broadcast ping
             print(f"  2. Sending broadcast PING...")
             ping = bytes([0xFF, 0xFF, 0xFE, 0x02, 0x01, 0xFC])
             ser.write(ping)
@@ -37,7 +33,6 @@ def test_raw_feetech():
             else:
                 print(f"     ✗ No response")
             
-            # Test 2: Ping ID 1
             print(f"  3. Sending PING to motor ID=1...")
             ping_id1 = bytes([0xFF, 0xFF, 0x01, 0x02, 0x01, 0xFB])
             ser.reset_input_buffer()
@@ -50,7 +45,6 @@ def test_raw_feetech():
             else:
                 print(f"     ✗ No response")
             
-            # Test 3: Read motor model (Address 0x03, Length 2)
             print(f"  4. Sending READ MODEL command to ID=1...")
             read_model = bytes([0xFF, 0xFF, 0x01, 0x04, 0x02, 0x03, 0x02, 0xF8])
             ser.reset_input_buffer()

@@ -64,7 +64,6 @@ class RobotController:
                 if not bus.openPort():
                     raise ConnectionError(f"could not open {self.ports[arm]}")
                 driver = sms_sts(bus)
-                # Handshake only pings; it cannot change servo state.
                 if handshake:
                     found = [sid for sid in HOME if driver.ping(sid)[1] == COMM_SUCCESS]
                     if not found:

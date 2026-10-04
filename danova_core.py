@@ -59,7 +59,6 @@ class PiperSpeaker:
             output = RUNTIME / f"speech_{self._counter % 3}.wav"
             with wave.open(str(output), "wb") as wav:
                 self._load().synthesize_wav(clean, wav)
-            # Windows-native asynchronous playback.  No cloud service is used.
             if os.name == "nt":
                 import winsound
                 winsound.PlaySound(str(output), winsound.SND_FILENAME | winsound.SND_ASYNC)

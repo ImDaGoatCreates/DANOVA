@@ -13,11 +13,9 @@ from typing import Any
 import requests
 from flask import Flask, request, jsonify, send_file, Response
 
-# Import from DANOVA_AI safely
 try:
     from DANOVA_AI import system_prompt, endpoint, MODEL, sanitize_voice_text
 except ImportError:
-    # Fallback definitions if functions are missing
     def system_prompt() -> str:
         return "You are D.A.N.O.V.A., a local voice assistant."
     def endpoint() -> str | None:
@@ -28,13 +26,11 @@ except ImportError:
 
 app = Flask(__name__)
 
-# Directory storage for user profiles and uploaded files
 DATA_DIR = Path("danova_data")
 DATA_DIR.mkdir(exist_ok=True)
 PROFILES_FILE = DATA_DIR / "profiles.json"
 OTP_CACHE = {}  # Temporary memory store for 6-digit codes
 
-# Optional API key setup
 API_KEY_FILE = Path("api_key.txt")
 API_KEY = API_KEY_FILE.read_text().strip() if API_KEY_FILE.exists() else None
 
@@ -50,17 +46,11 @@ def require_api_key() -> Any:
         return jsonify({"error": "Unauthorized"}), 401
 
 
-# ------------------------------------------------------------------
-# 1. System & Wake Route
-# ------------------------------------------------------------------
 @app.route("/api/wake", methods=["POST"])
 def wake_backend() -> Any:
     return jsonify({"status": "awake", "timestamp": datetime.now().isoformat()})
 
 
-# ------------------------------------------------------------------
-# 2. LM Studio Model Loader Route
-# ------------------------------------------------------------------
 @app.route("/api/load-models", methods=["POST"])
 def load_models() -> Any:
     data = request.get_json(silent=True) or {}
@@ -75,9 +65,6 @@ def load_models() -> Any:
         return jsonify({"success": True, "message": f"Model configuration queued for {llm} / {vlm}."})
 
 
-# ------------------------------------------------------------------
-# 3. Email OTP Authentication System
-# ------------------------------------------------------------------
 @app.route("/api/auth/request-otp", methods=["POST"])
 def request_otp() -> Any:
     data = request.get_json(silent=True) or {}
@@ -140,9 +127,6 @@ def verify_otp() -> Any:
     return jsonify({"success": True, "preferredName": record["name"]})
 
 
-# ------------------------------------------------------------------
-# 4. Chat & Hidden Mood System Endpoint
-# ------------------------------------------------------------------
 @app.route("/api/chat", methods=["POST"])
 def chat() -> Any:
     data = request.get_json(silent=True) or {}
@@ -190,9 +174,6 @@ def chat() -> Any:
     return Response(reply_content, mimetype="application/json")
 
 
-# ------------------------------------------------------------------
-# 5. Speech-to-Text (STT) & Piper TTS Audio Routes
-# ------------------------------------------------------------------
 @app.route("/api/stt", methods=["POST"])
 def speech_to_text() -> Any:
     if "file" not in request.files:
@@ -226,9 +207,6 @@ def text_to_speech() -> Any:
         return jsonify({"error": str(e)}), 500
 
 
-# ------------------------------------------------------------------
-# 6. File Workspace & Editing Routes
-# ------------------------------------------------------------------
 @app.route("/upload", methods=["POST"])
 def upload_file() -> Any:
     if "file" not in request.files:

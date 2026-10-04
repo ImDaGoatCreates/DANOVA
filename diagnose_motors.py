@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 """
 Diagnostic script to test motor connectivity on COM11/COM12
 Run this on Windows to identify the connection issue
@@ -12,7 +11,6 @@ print("=" * 70)
 print("DANOVA MOTOR CONNECTIVITY DIAGNOSTIC")
 print("=" * 70)
 
-# 1. List available ports
 print("\n[1/5] Available COM Ports:")
 ports = list(serial.tools.list_ports.comports())
 if ports:
@@ -21,7 +19,6 @@ if ports:
 else:
     print("      (no ports found)")
 
-# 2. Test COM12
 print("\n[2/5] Testing COM12 Port Access:")
 com11_ok = False
 try:
@@ -29,10 +26,7 @@ try:
     print(f"      ✓ COM12 opened at 1M baud")
     com11_ok = True
     
-    # 3. Try motor ping (Feetech protocol)
     print("\n[3/5] Sending Motor Ping (Feetech STS3215):")
-    # Feetech Ping packet: FF FF ID LEN CMD CHECKSUM
-    # For broadcast ping: FF FF FE 02 01 FC
     ping_packet = bytes([0xFF, 0xFF, 0xFE, 0x02, 0x01, 0xFC])
     
     ser.reset_input_buffer()
@@ -49,7 +43,6 @@ try:
     else:
         print(f"      ✗ No response from motors (timeout)")
     
-    # 4. Try single motor ping (ID 1)
     print("\n[4/5] Sending Single Motor Ping (ID 1):")
     ping_single = bytes([0xFF, 0xFF, 0x01, 0x02, 0x01, 0xFB])
     
@@ -72,7 +65,6 @@ try:
 except Exception as e:
     print(f"      ✗ Failed to open COM11: {e}")
 
-# 5. Test COM12
 print("\n[5/5] Testing COM11 Port Access:")
 try:
     ser = serial.Serial('COM11', 1000000, timeout=1)
@@ -81,7 +73,6 @@ try:
 except Exception as e:
     print(f"      ✗ Failed to open COM11: {e}")
 
-# Summary
 print("\n" + "=" * 70)
 print("DIAGNOSIS SUMMARY:")
 if com11_ok:

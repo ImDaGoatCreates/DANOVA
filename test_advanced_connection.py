@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 """
 Advanced motor connectivity test - simulates lerobot connection
 Run on Windows to test different connection strategies
@@ -17,7 +16,6 @@ except ImportError as e:
 import threading
 import time
 
-# Motor config (5 Feetech STS3215 motors)
 motors_config = {
     "joint1": Motor(id=1, model="sts3215", norm_mode="position"),
     "joint2": Motor(id=2, model="sts3215", norm_mode="position"),
@@ -67,7 +65,6 @@ def test_connection(port, label, handshake=True, timeout=10):
             result["message"] = f"Exception: {type(e).__name__}: {e}"
             print(f"  ✗ {type(e).__name__}: {e}")
     
-    # Run test in thread with timeout
     test_thread = threading.Thread(target=do_test, daemon=True)
     test_thread.start()
     test_thread.join(timeout=timeout + 2)
@@ -83,22 +80,17 @@ def test_connection(port, label, handshake=True, timeout=10):
     
     return result
 
-# Run tests
 print("\nDNOVA MOTOR CONNECTION DIAGNOSTIC")
 print("Testing different connection strategies...\n")
 
 results = []
 
-# Test 1: COM3 with handshake
 results.append(test_connection("COM3", "COM3 with Handshake (motor verification)", handshake=True, timeout=10))
 
-# Test 2: COM3 without handshake
 results.append(test_connection("COM3", "COM3 without Handshake (skip motor verification)", handshake=False, timeout=10))
 
-# Test 3: COM4 with handshake
 results.append(test_connection("COM4", "COM4 with Handshake (Follower Arm)", handshake=True, timeout=10))
 
-# Summary
 print(f"\n{'='*70}")
 print("SUMMARY")
 print(f"{'='*70}")
